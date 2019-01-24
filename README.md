@@ -1,17 +1,17 @@
-# UserAddress
+## UserAddress
 Client-server web application for maintaining the people and address lists.
 With possibilities to: 
-  •Add new person and address
-  •Edit/delete person, address data
-  •Specify the persons address from the list of addresses. 
-  •Search from users or address list.
+ - Add new person and address
+ - Edit/delete person, address data
+ - Specify the persons address from the list of addresses. 
+ - Search from users or address list.
 
-Technologies used: Java, Spring MVC, Hibernate, Maven, MySQL, Log4J, JSP, JSTL.
+### Technologies used: 
+Java, Spring MVC, Hibernate, Maven, MySQL, Log4J, JSP, JSTL.
 
+### How To Run
 
-How To Run
-
-1)create  tables in the MySQL:
+Prepare Database Structure
 
 CREATE TABLE `address` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,10 +37,10 @@ CREATE TABLE `user` (
   CONSTRAINT `FK27E3CB16002408` FOREIGN KEY (`address_ID`) REFERENCES `address` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8
 
-2) unzip userAddress.war into userAddress folder at your $CATALINA_HOME\webapps directory
+run mvn package and place newly generated `war` archive into userAddress folder at your $CATALINA_HOME\webapps directory
 
-3) configure your database configuration in userAddress\spring.properties file
+configure your database configuration in `userAddress\spring.properties` file
 
-4) run tomcat-server
+run tomcat-server
 
-5) open your browser and navigate http://localhost:8080/userAddress/main/index.html
+open your browser and navigate http://localhost:8080/userAddress/main/index.html

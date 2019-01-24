@@ -6,9 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * Retrieves index page
- */
 @Controller
 public class NavigationController {
     protected static Logger logger = Logger.getLogger("controller");
