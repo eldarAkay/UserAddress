@@ -1,7 +1,6 @@
 package com.mustafaiev.dto;
 
 import java.util.List;
-
 import com.mustafaiev.domain.User;
 
 /**

@@ -1,17 +1,12 @@
 package com.mustafaiev.controller;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import com.mustafaiev.domain.Address;
+import com.mustafaiev.domain.User;
 import com.mustafaiev.dto.AddressDTO;
 import com.mustafaiev.dto.UserDTO;
-import org.apache.log4j.Logger;
-import com.mustafaiev.domain.User;
-import com.mustafaiev.service.UserService;
 import com.mustafaiev.service.AddressService;
+import com.mustafaiev.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +14,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * Handles and retrieves address request
@@ -54,7 +51,6 @@ public class UserController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, false));
     }
 
-
     /**
      * Retrieves the Users page
      *
@@ -65,25 +61,19 @@ public class UserController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getRecords(Model model, HttpServletRequest req, HttpServletRequest resp) {
-
         logger.debug("Received request to show posts page");
 
         String firstName = paramValidation("firstName", req);
         String lastName = paramValidation("lastName", req);
         String email = paramValidation("email", req);
 
-
         resp.setAttribute("firstName", firstName);
         resp.setAttribute("lastName", lastName);
         resp.setAttribute("email", email);
 
-
         List<UserDTO> userListDTO = getUserListDTO(firstName, lastName, email);
-
-        // Add to model
         model.addAttribute("userList", userListDTO);
 
-        // This will resolve to /WEB-INF/jsp/user-list.jsp
         return "user-list";
     }
 
@@ -96,9 +86,7 @@ public class UserController {
      * @return list of users
      */
     public List getUserListDTO(String firstName, String lastName, String email) {
-
         List<UserDTO> userListDTO = new ArrayList<UserDTO>();
-
         List<User> users;
 
         if (firstName != null && lastName != null && email != null) {
@@ -107,15 +95,12 @@ public class UserController {
             users = userService.getAll();
         }
 
-
         for (User user : users) {
-            // Create new data transfer object
             userListDTO.add(getUserDTO(user));
-
         }
+
         return userListDTO;
     }
-
 
     /**
      * Gets user data transfer object
@@ -124,9 +109,7 @@ public class UserController {
      * @return
      */
     public UserDTO getUserDTO(User user) {
-
         UserDTO dto = new UserDTO();
-
         dto.setId(user.getId());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
@@ -136,7 +119,6 @@ public class UserController {
         dto.setBirthDate(user.getBirthDate());
 
         return dto;
-
     }
 
     /**
@@ -147,7 +129,6 @@ public class UserController {
      * @return parameter or empty field instead of null
      */
     public String paramValidation(String param, HttpServletRequest req) {
-
         String value;
         if ((req.getParameter(param) != null)) {
             value = (req.getParameter(param));
@@ -163,16 +144,9 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String getAdd(Model model) {
         logger.debug("Received request to show add page");
-
-        // Prepare model object
         List<AddressDTO> addressListDTO = getAddressListDTO();
-
-        // Add to model
         model.addAttribute("addressList", addressListDTO);
-
-        // Prepare model object
         User user = new User();
-
         model.addAttribute("userAttribute", user);
 
         return "user-new";
@@ -192,11 +166,8 @@ public class UserController {
         logger.debug("Received request to add new user");
 
         if (result.hasErrors()) {
-
             List<AddressDTO> addressListDTO = getAddressListDTO();
-
             model.addAttribute("addressList", addressListDTO);
-
             model.addAttribute("userAttribute", user);
 
             return "user-new";
@@ -223,18 +194,14 @@ public class UserController {
      * Gets the list of addresses
      */
     public List getAddressListDTO() {
-
         List<AddressDTO> addressListDTO = new ArrayList<AddressDTO>();
-
         List<Address> addresses = addressService.getAll();
-
-        // Add to model list
 
         for (Address address : addresses) {
             // Create new data transfer object
             addressListDTO.add(getAddressDTO(address));
-
         }
+
         return addressListDTO;
     }
 
@@ -245,9 +212,7 @@ public class UserController {
      * @return data transfer object
      */
     public AddressDTO getAddressDTO(Address address) {
-
         AddressDTO dto = new AddressDTO();
-
         dto.setId(address.getId());
         dto.setRegion(address.getRegion());
         dto.setCity(address.getCity());
@@ -264,11 +229,8 @@ public class UserController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String getDelete(@RequestParam("id") Integer userId) {
         logger.debug("Received request to delete credit card");
-
-        // Delegate to service
         userService.delete(userId);
 
-        // Redirect to url
         return "redirect:/main/user/list";
     }
 
@@ -283,30 +245,21 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String getEdit(@RequestParam("id") Integer userId, Model model, HttpServletRequest resp) {
         logger.debug("Received request to show edit page");
-
-        // Prepare model object
         List<AddressDTO> addressListDTO = getAddressListDTO();
-
-        // Add to model
         model.addAttribute("addressList", addressListDTO);
-
-        // Retrieve user by id
         User existingUser = userService.get(userId);
-
         Address userAddress = existingUser.getAddress();
         if (existingUser.getAddress() != null) {
             resp.setAttribute("addressId", userAddress.getId());
         }
-
-        // Add to model
         model.addAttribute("userAttribute", existingUser);
 
-        // This will resolve to /WEB-INF/jsp/user-edit.jsp
         return "user-edit";
     }
 
     /**
      * Adds new user
+     *
      * @param userId
      * @param user
      * @param result
@@ -321,17 +274,13 @@ public class UserController {
         logger.debug("Received request to add new user");
 
         if (result.hasErrors()) {
-
             List<AddressDTO> addressListDTO = getAddressListDTO();
-
             User existingUser = userService.get(userId);
-
             Address userAddress = existingUser.getAddress();
 
             if (existingUser.getAddress() != null) {
                 resp.setAttribute("addressId", userAddress.getId());
             }
-
             model.addAttribute("addressList", addressListDTO);
             model.addAttribute("userAttribute", user);
 

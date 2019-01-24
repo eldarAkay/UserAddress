@@ -11,7 +11,6 @@
     table {
       border: 1px solid black;
       border-collapse: collapse;
-
     }
     th {
       padding: 5px;
@@ -57,17 +56,11 @@
   <input type="submit" value="Search">
   <input type="button" onclick="location.href='${pageContext.request.contextPath}/main/user/list.html';" value="Reset" />
 </form>
-
-
-
 <br/>
-
 <p><a href="${pageContext.request.contextPath}/main/user/add.html">Create a new user</a></p>
-
 <table style="text-align: center;" border="1px" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
-    <%--<th>Id</th>--%>
     <th>Last Name</th>
     <th>First Name</th>
     <th>Patronymic</th>

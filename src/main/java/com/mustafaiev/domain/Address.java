@@ -4,14 +4,8 @@ package com.mustafaiev.domain;
  * Created by user on 09.10.2015.
  */
 import org.hibernate.validator.constraints.NotEmpty;
-
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  * Represents the Address entity
  *
@@ -44,7 +38,6 @@ public class Address implements Serializable {
     @Column(name = "HOME_NUMBER")
     private String homeNumber;
 
-   // @Pattern(regexp="[0-9]+")
     @Column(name = "FLAT_NUMBER")
     private Integer flatNumber;
 

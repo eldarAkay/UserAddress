@@ -2,7 +2,6 @@ package com.mustafaiev.domain;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
 
 /**
@@ -26,7 +25,6 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
-
     private static final long serialVersionUID = 5924361831551833717L;
 
     @Id

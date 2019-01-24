@@ -1,15 +1,14 @@
 package com.mustafaiev.service;
 
-
-import java.util.*;
-import javax.annotation.Resource;
-
-import org.apache.log4j.Logger;
-
-import org.hibernate.*;
 import com.mustafaiev.domain.Address;
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Service for processing Addresses
@@ -32,14 +31,9 @@ public class AddressService {
      */
     public List<Address> getAll() {
         logger.debug("Retrieving all addresses");
-
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-
-        // Create a Hibernate query (HQL)
         Query query = session.createQuery("FROM  Address");
 
-        // Retrieve all
         return query.list();
     }
 
@@ -51,11 +45,8 @@ public class AddressService {
     public List<Address> getSearchedList(String region, String city, String street) {
         logger.debug("Retrieving searched addresses");
 
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-
         Query query;
-
         String hql = "FROM Address";
 
         int count = 0;
@@ -94,7 +85,6 @@ public class AddressService {
         }
 
         return query.list();
-
     }
 
 
@@ -104,7 +94,6 @@ public class AddressService {
      * @return
      */
     public String editHqlQuery(int count) {
-
         String hqlText = "";
 
         if (count == 1) {
@@ -113,6 +102,7 @@ public class AddressService {
         if (count == 2 || count == 3) {
             hqlText = " AND ";
         }
+
         return hqlText;
     }
 
@@ -120,10 +110,7 @@ public class AddressService {
      * Retrieves a single address
      */
     public Address get(Integer id) {
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-
-        // Retrieve existing address
         Address address = (Address) session.get(Address.class, id);
 
         return address;
@@ -134,11 +121,8 @@ public class AddressService {
      */
     public void add(Address address) {
         logger.debug("Adding new address");
-
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
 
-        // Persists to db
         session.save(address);
     }
 
@@ -149,14 +133,9 @@ public class AddressService {
      */
     public void delete(Integer id) {
         logger.debug("Deleting existing address");
-
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-
-        // Retrieve existing address
         Address address = (Address) session.get(Address.class, id);
 
-        // Delete
         session.delete(address);
     }
 
@@ -165,21 +144,15 @@ public class AddressService {
      */
     public void edit(Address address) {
         logger.debug("Editing existing address");
-
-        // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-
-        // Retrieve existing address via id
         Address existingAddress = (Address) session.get(Address.class, address.getId());
 
-        // Assign updated values to this address
         existingAddress.setRegion(address.getRegion());
         existingAddress.setCity(address.getCity());
         existingAddress.setStreet(address.getStreet());
         existingAddress.setHomeNumber(address.getHomeNumber());
         existingAddress.setFlatNumber(address.getFlatNumber());
 
-        // Save updates
         session.save(existingAddress);
     }
 }
